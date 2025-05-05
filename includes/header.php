@@ -27,7 +27,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
     <div class="container">
-        <a class="navbar-brand text-primary" href="#">KalantarBAB</a>
+        <a class="navbar-brand text-primary" href="https://github.com/ka1antarBAB/ClientLog-v1">KalantarBAB</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
