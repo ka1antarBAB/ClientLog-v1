@@ -28,6 +28,9 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_type'] === 'user') {
                         <div class="card-footer text-center">
                             <a href="../pages/admin_login_form.php" class="text-decoration-none">Login as Admin</a>
                         </div>
+                        <div class="card-footer text-center">
+                            <small>dont have any account?</small> <a href="../pages/user_form.php" class="text-decoration-none">SignUp</a>
+                        </div>
                     </form>
                 </div>
             </div>
