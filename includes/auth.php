@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 function require_admin(){
     if(!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin'){

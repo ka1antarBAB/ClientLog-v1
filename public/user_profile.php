@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once '../includes/jdf.php';
 require_once '../includes/auth.php';
 require_login();
 
@@ -43,7 +47,13 @@ $notes = $query_notes->fetchAll(PDO::FETCH_OBJ);
                                     <?php foreach ($notes as $note): ?>
                                         <div class="list-group-item list-group-item-action">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <small class="text-muted"><?php echo $note->contact_date; ?></small>
+                                                <small class="text-muted">
+                                                    <?php
+                                                        $contact_date = $note->contact_date;
+                                                        $timestamp = strtotime($contact_date);
+                                                        echo jdate("Y/m/d - H:i", $timestamp);
+                                                    ?>
+                                                </small>
                                             </div>
                                             <p class="mb-1"><?php echo htmlspecialchars($note->note); ?></p>
                                         </div>
@@ -55,7 +65,7 @@ $notes = $query_notes->fetchAll(PDO::FETCH_OBJ);
                         </div>
                     </div>
                     <div class="card-footer text-muted">
-                        Last login: <?php echo date('Y-m-d H:i:s'); ?>
+                        last login: <?php echo jdate('Y/m/d H:i:s'); ?>
                     </div>
                 </div>
             </div>

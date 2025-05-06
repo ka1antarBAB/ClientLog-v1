@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once '../config/db.php';
 
 $name = $phone = $email = $address = $source = $custom_source = $category = '';
@@ -71,14 +75,16 @@ if (isset($_POST['submit'])) {
         $insert_query->bindParam(':category', $category);
 
         if ($insert_query->execute()) {
-            echo "<script>alert('User Added Successfully!'); window.location.href='../public/index.php';</script>";
+            $new_user_id = $pdo->lastInsertId();
+            $_SESSION['user_type'] = 'user';
+            $_SESSION['user_id'] = $new_user_id;
+            echo "<script>alert('User Added Successfully!'); window.location.href='../public/user_profile.php';</script>";
             exit;
         } else {
-            echo "<script>alert('Something went wrong!'); window.location.href='../public/index.php';</script>";
+            echo "<script>alert('Something went wrong!'); window.location.href='../public/user_profile.php';</script>";
             exit;
         }
     } else {
-        // Display errors in a Bootstrap alert box
         echo '<div class="alert alert-danger">';
         foreach ($errors as $field => $error) {
             if (!empty($error)) {

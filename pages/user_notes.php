@@ -1,4 +1,5 @@
 <?php
+    require_once '../includes/jdf.php';
     require_once '../includes/auth.php';
     require_admin();
 ?>
@@ -67,7 +68,11 @@ $notes = $notes_query->fetchAll(PDO::FETCH_OBJ);
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0"><?= htmlspecialchars($note->title) ?></h5>
                             <small class="text-muted">
-                                <?= date('Y/m/d H:i', strtotime($note->contact_date)) ?>
+                                <?php
+                                    $contact_date = $note->contact_date;
+                                    $timestamp = strtotime($contact_date);
+                                    echo jdate("Y/m/d - H:i", $timestamp);
+                                ?>
                             </small>
                         </div>
                         <div class="card-body">
