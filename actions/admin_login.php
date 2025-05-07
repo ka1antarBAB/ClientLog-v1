@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../config/db.php';
 
 $username = $_POST["username"];
@@ -14,6 +16,8 @@ if ($admin && password_verify($password, $admin->password)) {
     $_SESSION['user_type'] = 'admin';
     $_SESSION['user_id'] = $admin->id;
     $_SESSION['username'] = $admin->username;
+    $_SESSION['admin_role'] = $admin->role;
+    $_SESSION['allowed_categories'] = explode(',', $admin->allowed_categories);
     header('Location: ../public/index.php');
 }else{
     echo "Wrong username or password";
