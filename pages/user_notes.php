@@ -1,17 +1,27 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     require_once '../includes/jdf.php';
     require_once '../includes/auth.php';
     require_admin();
 ?>
 <?php
 require_once '../config/db.php';
+
+$allowed = $_SESSION['allowed_categories'];
+$placeholders = implode(',', array_fill(0, count($allowed), '?'));
 $user_id = $_GET['id'] ?? 0;
 
-$user_sql = "SELECT username FROM users WHERE id = :id";
+$user_sql = "SELECT username, category FROM users WHERE id = :id";
 $user_query = $pdo->prepare($user_sql);
 $user_query->bindParam(':id', $user_id, PDO::PARAM_INT);
 $user_query->execute();
 $user = $user_query->fetch(PDO::FETCH_OBJ);
+$category = strtolower($user->category);
+if (!in_array($category, $_SESSION['allowed_categories'])) {
+    die("hey :/ , you dont have access to this user get out");
+}
 
 $notes_sql = "SELECT * FROM notes WHERE user_id = :id ORDER BY contact_date DESC";
 $notes_query = $pdo->prepare($notes_sql);
