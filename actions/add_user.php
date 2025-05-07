@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+$is_admin = isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin';
 
 require_once '../config/db.php';
 
@@ -76,10 +77,14 @@ if (isset($_POST['submit'])) {
 
         if ($insert_query->execute()) {
             $new_user_id = $pdo->lastInsertId();
-            $_SESSION['user_type'] = 'user';
-            $_SESSION['user_id'] = $new_user_id;
-            echo "<script>alert('User Added Successfully!'); window.location.href='../public/user_profile.php';</script>";
-            exit;
+            if ($is_admin) {
+                echo "<script>alert('User Added Successfully by Admin!'); window.location.href='../public/index.php';</script>";
+            }else{
+                $_SESSION['user_type'] = 'user';
+                $_SESSION['user_id'] = $new_user_id;
+                echo "<script>alert('User Added Successfully!'); window.location.href='../public/user_profile.php';</script>";
+                exit;
+            }
         } else {
             echo "<script>alert('Something went wrong!'); window.location.href='../public/user_profile.php';</script>";
             exit;
